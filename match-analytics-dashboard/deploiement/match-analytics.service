@@ -1,0 +1,22 @@
+# À copier dans /etc/systemd/system/match-analytics.service
+[Unit]
+Description=Match Analytics Dashboard (API)
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=matchapp
+Group=matchapp
+WorkingDirectory=/opt/match-analytics/backend
+ExecStart=/usr/bin/node src/server.js
+Restart=on-failure
+RestartSec=5
+# Le fichier .env du dossier backend est lu par l'application elle-même.
+Environment=NODE_ENV=production
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target
